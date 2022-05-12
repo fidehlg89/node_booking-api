@@ -14,6 +14,9 @@ const hotels = require('./routes/hotels');
 
 app.set('port', process.env.PORT || 5000);
 
+//Middlewares
+app.use(express.json())
+
 //Use routes
 app.use("/api/auth", auth);
 app.use("/api/hotels", hotels);

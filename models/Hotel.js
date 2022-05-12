@@ -1,50 +1,54 @@
 const mongoose = require('mongoose');
-const{ Schema, model } = mongoose;
+const { Schema, model } = mongoose;
 const { formatDate } = require('../utils/utils');
 
 const HotelSchema = new Schema({
-    name:{
-        type:String,
-        required:true
+    name: {
+        type: String,
+        required: true
     },
-    type:{
-        type:String,
-        required:true
+    type: {
+        type: String,
+        required: true
     },
-    city:{
-        type:String,
-        required:true
+    city: {
+        type: String,
+        required: true
     },
-    address:{
-        type:String,
-        required:true
+    address: {
+        type: String,
+        required: true
     },
-    distance:{
-        type:String,
-        required:true
+    distance: {
+        type: String,
+        required: true
     },
-    photos:{
-        type:[String]
+    photos: {
+        type: [String]
     },
-    description:{
-        type:String,
-        required:true
+    title: {
+        type: String,
+        required: true,
     },
-    rating:{
-        type:Number,
-        min:0,
-        max:5
+    description: {
+        type: String,
+        required: true
     },
-    rooms:{
-        type:[String]
+    rating: {
+        type: Number,
+        min: 0,
+        max: 5
     },
-    cheapestPrice:{
-        type:Number,
-        required:true
+    rooms: {
+        type: [String]
     },
-    features:{
-        type:Boolean,
-        default:false
+    cheapestPrice: {
+        type: Number,
+        required: true
+    },
+    features: {
+        type: Boolean,
+        default: false
     },
     created_at: {
         type: String,
