@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const path = require('path');
 const dotenv = require('dotenv');
+const {handleErrorReport} = require('./errors/handleError');
 
 dotenv.config();
 
@@ -20,6 +21,9 @@ app.use(express.json())
 //Use routes
 app.use("/api/auth", auth);
 app.use("/api/hotels", hotels);
+
+//Handle Error
+app.use(handleErrorReport);
 
 //Archivos estaticos
 app.use(express.static(path.join(__dirname, 'public')));

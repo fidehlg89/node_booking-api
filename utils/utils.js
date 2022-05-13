@@ -5,4 +5,10 @@ utils.formatDate = (current_datetime)=>{
     return formatted_date;
 }
 
+utils.response= (value) => {   
+    if(value === "delete"){
+        return JSON.stringify({message : "Has been deleted"})
+    }
+}
+
 module.exports = utils
