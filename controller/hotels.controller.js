@@ -1,6 +1,6 @@
 const { createError } = require("../errors/handleError");
 const Hotel = require("../models/Hotel");
-const {response} = require("../utils/utils");
+const {response, formatDate} = require("../utils/utils");
 
 const hotelController = {};
 
@@ -25,6 +25,8 @@ hotelController.updateHotel = async(req, res, next) => {
             req.params.id, 
             {$set: req.body},
             {new:true})
+            const date = formatDate(new Date());
+            updateHotel.updated = date;
         res.status(200).json(updateHotel);
     } catch (error) {
         next(error);

@@ -1,10 +1,10 @@
 const router = require("express").Router();
 
-const {createHotel, 
+const { createHotel,
     updateHotel,
     deleteHotel,
     getHotel,
-    getAllHotel} = require('../controller/hotels.controller');
+    getAllHotel } = require('../controller/hotels.controller');
 
 //CREATE
 router.post("/", createHotel)

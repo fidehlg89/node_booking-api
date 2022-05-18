@@ -50,11 +50,17 @@ const HotelSchema = new Schema({
         type: Boolean,
         default: false
     },
-    created_at: {
+    created: {
         type: String,
         default: formatDate(new Date())
+    },
+    updated:{
+        type:String,
+        default: formatDate(new Date())
     }
-})
+},
+    { timestamps: false }
+)
 
 module.exports = model('Hotel', HotelSchema);
 
