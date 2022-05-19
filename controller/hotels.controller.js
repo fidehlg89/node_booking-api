@@ -72,6 +72,7 @@ hotelController.getAllHotel = async (req, res, next) => {
 //Count by City
 hotelController.countByCity = async (req, res, next) => {
     const cities = req.query.cities.split(",")
+    console.log(cities)
     try {
         const list = await Promise.all(
             cities.map((city) => {
@@ -89,7 +90,7 @@ hotelController.countByCity = async (req, res, next) => {
 hotelController.countByType = async (req, res, next) => {
     try {
         const hotelCount = await Hotel.countDocuments({ type: "hotel" })
-        const apartmentCount = await Hotel.countDocuments({ type: "apartment" })
+        const apartmentCount = await Hotel.countDocuments({ type: "apartments" })
         const resortCount = await Hotel.countDocuments({ type: "resort" })
         const villaCount = await Hotel.countDocuments({ type: "villa" })
         const cabinCount = await Hotel.countDocuments({ type: "cabin" })

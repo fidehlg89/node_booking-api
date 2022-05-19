@@ -18,6 +18,7 @@ roomController.createRoom = async (req, res, next) => {
         } catch (error) {
             next(error)
         }
+        res.status(200).json(savedRoom);
     } catch (error) {
         next(error)
     }
