@@ -1,8 +1,6 @@
-const { createError } = require("../errors/handleError");
 const Hotel = require("../models/Hotel");
 const Room = require('../models/Room')
 const { response, formatDate } = require("../utils/utils");
-const authController = require("./auth.controller");
 
 const hotelController = {};
 
@@ -110,7 +108,7 @@ hotelController.countByType = async (req, res, next) => {
 }
 
 //Get rooms for hotel
-authController.getHotelRooms = async (req, res, next) => {
+hotelController.getHotelRooms = async (req, res, next) => {
     try {
         const hotel = await Hotel.findById(req.params.id)
         const list = await Promise.all(
