@@ -1,12 +1,14 @@
 const { createError } = require("../errors/handleError");
 const Hotel = require("../models/Hotel");
-const {response, formatDate} = require("../utils/utils");
+const Room = require('../models/Room')
+const { response, formatDate } = require("../utils/utils");
+const authController = require("./auth.controller");
 
 const hotelController = {};
 
 //CREATE
-hotelController.createHotel = async(req, res, next) => {
-    
+hotelController.createHotel = async (req, res, next) => {
+
     const newHotel = new Hotel(req.body)
 
     try {
@@ -18,15 +20,15 @@ hotelController.createHotel = async(req, res, next) => {
 }
 
 //UPDTAE
-hotelController.updateHotel = async(req, res, next) => {
-    
+hotelController.updateHotel = async (req, res, next) => {
+
     try {
         const updateHotel = await Hotel.findByIdAndUpdate(
-            req.params.id, 
-            {$set: req.body},
-            {new:true})
-            const date = formatDate(new Date());
-            updateHotel.updated = date;
+            req.params.id,
+            { $set: req.body },
+            { new: true })
+        const date = formatDate(new Date());
+        updateHotel.updated = date;
         res.status(200).json(updateHotel);
     } catch (error) {
         next(error);
@@ -34,7 +36,7 @@ hotelController.updateHotel = async(req, res, next) => {
 }
 
 //DELETE
-hotelController.deleteHotel = async(req, res, next) =>{
+hotelController.deleteHotel = async (req, res, next) => {
     try {
         await Hotel.findByIdAndDelete(req.params.id);
         res.status(200).json(response("delete"));
@@ -44,7 +46,7 @@ hotelController.deleteHotel = async(req, res, next) =>{
 }
 
 //GET
-hotelController.getHotel = async(req, res, next)=>{
+hotelController.getHotel = async (req, res, next) => {
     try {
         const hotel = await Hotel.findById(req.params.id);
         res.status(200).json(hotel);
@@ -54,10 +56,69 @@ hotelController.getHotel = async(req, res, next)=>{
 }
 
 //GET ALL
-hotelController.getAllHotel = async(req, res, next) => {
+hotelController.getAllHotel = async (req, res, next) => {
+    const { min, max, ...others } = req.query;
     try {
-        const hotels = await Hotel.find();
+        const hotels = await Hotel.find({
+            ...others,
+            cheapestPrice: {
+                $gt: min | 1, $lt: max || 999
+            }
+        }).limit(req.query.limit);
         res.status(200).json(hotels);
+    } catch (error) {
+        next(error);
+    }
+}
+
+//Count by City
+hotelController.countByCity = async (req, res, next) => {
+    const cities = req.query.cities.split(",")
+    try {
+        const list = await Promise.all(
+            cities.map((city) => {
+                return Hotel.countDocuments({ city: city })
+            })
+        )
+
+        res.status(200).json(list)
+    } catch (error) {
+        next(error);
+    }
+}
+
+//Count by type
+hotelController.countByType = async (req, res, next) => {
+    try {
+        const hotelCount = await Hotel.countDocuments({ type: "hotel" })
+        const apartmentCount = await Hotel.countDocuments({ type: "apartment" })
+        const resortCount = await Hotel.countDocuments({ type: "resort" })
+        const villaCount = await Hotel.countDocuments({ type: "villa" })
+        const cabinCount = await Hotel.countDocuments({ type: "cabin" })
+
+        res.status(200).json([
+            { type: "hotel", count: hotelCount },
+            { type: "apartments", count: apartmentCount },
+            { type: "resorts", count: resortCount },
+            { type: "villas", count: villaCount },
+            { type: "cabins", count: cabinCount },
+        ]);
+
+    } catch (error) {
+        next(error);
+    }
+}
+
+//Get rooms for hotel
+authController.getHotelRooms = async (req, res, next) => {
+    try {
+        const hotel = await Hotel.findById(req.params.id)
+        const list = await Promise.all(
+            hotel.rooms.map((room) => {
+                return Room.findById(room)
+            })
+        )
+        res.status(200).json(list)
     } catch (error) {
         next(error);
     }
