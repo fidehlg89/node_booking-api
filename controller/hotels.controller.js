@@ -60,7 +60,7 @@ hotelController.getAllHotel = async (req, res, next) => {
         const hotels = await Hotel.find({
             ...others,
             cheapestPrice: {
-                $gt: min | 1, $lt: max || 999
+                $gte: min | 1, $lte: max || 999
             }
         }).limit(req.query.limit);
         res.status(200).json(hotels);
@@ -72,7 +72,6 @@ hotelController.getAllHotel = async (req, res, next) => {
 //Count by City
 hotelController.countByCity = async (req, res, next) => {
     const cities = req.query.cities.split(",")
-    console.log(cities)
     try {
         const list = await Promise.all(
             cities.map((city) => {
