@@ -20,7 +20,7 @@ authController.register = async (req, res, next) => {
         await newUser.save()
         res.status(200).json(response("create"))
     } catch (error) {
-        next(err);
+        next(error);
     }
 }
 
