@@ -5,6 +5,8 @@ dotenv.config();
 
 const dev_db_url = process.env.MONGO_URL;
 
+mongoose.set("strictQuery", false);
+
 mongoose
   .connect(dev_db_url, {
     useNewUrlParser: true,
